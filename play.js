@@ -1218,7 +1218,7 @@ async function apocalypse_effect() {
     } else if (active_player_count == 3) {
       await America_move();
     } else if (active_player_count == 4) {
-      await doctor_move();
+      await doctor_portal_move();
     }
 
     window[players[active_player_count - 1]].position = destination;
@@ -1352,7 +1352,7 @@ function Animation_move_player() {
   } else if (active_player_count == 3) {
     America_move();
   } else if (active_player_count == 4) {
-    doctor_move();
+    doctor_portal_move();
   }
 
   window[players[active_player_count - 1]].position = destination;
@@ -1387,12 +1387,12 @@ async function space_stone_effect(player_index, dir) {
       attacked_player = player3_data;
       attacked_player_count = 3;
     } else if (player_index == 3) {
-      await doctor_move();
+      await doctor_portal_move();
       attacked_player = player4_data;
       attacked_player_count = 4;
     }
     active_player = attacked_player;
-    active_player_count=attacked_player_count;
+    active_player_count = attacked_player_count;
     window[players[player_index]].position = destination;
 
     await enemy_effect(false);
@@ -1562,7 +1562,7 @@ async function move_player() {
     } else if (active_player_count == 3) {
       await America_move();
     } else if (active_player_count == 4) {
-      await doctor_move();
+      await doctor_portal_move();
     }
 
     window[players[active_player_count - 1]].position = destination;
@@ -3127,16 +3127,15 @@ async function avail_options() {
           }
           portal_storage.spacestone = true;
         }
-        if(selected_power.player=="spp1" && active_player_count!=1
-        ||selected_power.player=="spp2" && active_player_count!=2
-        ||selected_power.player=="spp3" && active_player_count!=3
-        ||selected_power.player=="spp4" && active_player_count!=4
-        )
-        {
+        if (selected_power.player == "spp1" && active_player_count != 1
+          || selected_power.player == "spp2" && active_player_count != 2
+          || selected_power.player == "spp3" && active_player_count != 3
+          || selected_power.player == "spp4" && active_player_count != 4
+        ) {
           confirm_move();
         }
-        else{
-move_frame();
+        else {
+          move_frame();
         }
         // let current_player = active_player;
         // active_player = attacked_player;
@@ -3164,7 +3163,7 @@ move_frame();
         //   }
         // }
 
-       
+
         // // if (active_player == player1_data && active_player.isStones) {
         // //   player1_data.spacestone = false;
         // //   player1_data.stonecount--;
@@ -3472,6 +3471,7 @@ function element_from_html(html) {
   return template.content.firstElemenChild;
 }
 
+var portal_status = true;
 var speed = 2;
 var source = 1;
 var destination = 5;
@@ -3580,7 +3580,7 @@ var grid_coordinates = {
 };
 
 {
-  let canvas = document.getElementById("canvas1");
+  let canvas = document.getElementById("canvas6");
   let ctx = canvas.getContext("2d");
   let playerImage = new Image();
   playerImage.src = "DoctorStrange-anime1.png";
@@ -3591,7 +3591,7 @@ var grid_coordinates = {
   let FrameY = 0;
   let dx = 0;
   let dy = 365;
-  let canvas2 = document.getElementById("canvas2");
+  let canvas2 = document.getElementById("canvas1");
   let ctx2 = canvas2.getContext("2d");
   let playerImage2 = new Image();
   playerImage2.src = "IronMan-anime1.png";
@@ -3602,7 +3602,7 @@ var grid_coordinates = {
   let FrameY2 = 0;
   let dx2 = 0;
   let dy2 = 365;
-  let canvas3 = document.getElementById("canvas3");
+  let canvas3 = document.getElementById("canvas2");
   let ctx3 = canvas3.getContext("2d");
   let playerImage3 = new Image();
   playerImage3.src = "Captain-America Anime1.png";
@@ -3613,7 +3613,7 @@ var grid_coordinates = {
   let FrameY3 = 0;
   let dx3 = 0;
   let dy3 = 365;
-  let canvas4 = document.getElementById("canvas4");
+  let canvas4 = document.getElementById("canvas3");
   let ctx4 = canvas4.getContext("2d");
   let playerImage4 = new Image();
   playerImage4.src = "thor-anime6.png";
@@ -3672,9 +3672,703 @@ var grid_coordinates = {
   };
 }
 
+
+
+async function doctor_hand_rotate(start_x, start_y, end_x, end_y, dir) {
+  return new Promise(function (resolve) {
+    let canvas = document.getElementById("canvas6");
+    let ctx = canvas.getContext("2d");
+    let CANVAS_HEIGHT = canvas.height = 400;
+    let CANVAS_WIDTH = canvas.width = 480;
+
+    let playerImage = new Image();
+    playerImage.src = 'DoctorStrange-anime5.png';
+    let Sprite_Width = 180;
+    let Sprite_Height = 214;
+    let FrameX = 0;
+    let FrameY = 0;
+    let GameFrames = 0;
+    let StaggerFrames = 15;
+    let dx = start_x;
+    let dy = start_y;
+    let moveStagger = 1;
+    let moveFrames = 0;
+    // ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    var value = true;
+    console.log("hand rotate start");
+    for (let j = 0; j < speed; j++) {
+
+      animate();
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      if (dir == "right") {
+
+        ctx.drawImage(playerImage, FrameX * Sprite_Width, FrameY * Sprite_Height, Sprite_Width, Sprite_Height, dx, dy - 3, CANVAS_WIDTH - 425, CANVAS_HEIGHT - 355);
+      } else {
+        ctx.save();
+        ctx.scale(-1, 1);
+        ctx.drawImage(playerImage, FrameX * Sprite_Width, FrameY * Sprite_Height, Sprite_Width, Sprite_Height, -dx - 50, dy - 3, CANVAS_WIDTH - 425, CANVAS_HEIGHT - 355);
+        ctx.restore();
+      }
+      if (GameFrames % StaggerFrames == 0) {
+        FrameX++;
+        if (FrameY == 0) {
+          Sprite_Width = 180;
+          Sprite_Height = 214;
+        }
+        if (FrameY == 1) {
+          Sprite_Width = 165;
+          Sprite_Height = 214;
+        }
+        if (FrameY == 2) {
+          Sprite_Width = 178;
+          Sprite_Height = 214;
+        }
+        if (FrameY == 3) {
+          Sprite_Width = 175;
+          Sprite_Height = 214;
+          if (FrameX == 3) {
+            Sprite_Height = 212;
+            Sprite_Width = 172;
+          }
+          if (FrameX == 1) {
+            Sprite_Height = 212;
+            Sprite_Width = 174;
+          }
+        }
+        if (FrameX > 2) {
+          FrameX = 0;
+          FrameY++;
+          if (FrameY > 3) {
+            FrameY = 0;
+            value = false;
+            ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            console.log("hand rotate done");
+            resolve(true);
+          }
+        }
+      }
+      if (value) {
+
+        requestAnimationFrame(animate);
+      }
+      if (moveFrames % moveStagger == 0) {
+        // dx++;
+        // if (dx == end_x) {
+        //   value = false;
+        //   console.log("right done");
+        //   resolve(true);
+        // }
+      }
+
+      GameFrames++;
+      moveFrames++;
+    }
+    // animate()
+
+  })
+
+}
+
+
+async function doctor_portal_rotate(start_x, start_y, end_x, end_y, canvas_layer, In_or_out, dir) {
+  return new Promise(function (resolve) {
+    let canvas = document.getElementById(`canvas${canvas_layer}`);
+    let ctx = canvas.getContext("2d");
+    let CANVAS_HEIGHT = canvas.height = 400;
+    let CANVAS_WIDTH = canvas.width = 480;
+
+    let playerImage = new Image();
+    playerImage.src = 'DoctorStrange-anime6.png';
+    let Sprite_Width = 120;
+    let Sprite_Height = 411;
+    let FrameX = 0;
+    let FrameY = 0;
+    let GameFrames = 0;
+    let StaggerFrames = 15;
+    let dx = start_x;
+    let dy = start_y - 5;
+    let moveStagger = 1;
+    let moveFrames = 0;
+    let FrameX_counter = 0;
+    let Sprite_Width_counter = 0;
+    let CANVAS_HEIGHT_counter = 0;
+    let dy_counter = 0;
+    let temp = false;
+    // ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    var value = true;
+    console.log("portal rotate start")
+    for (let j = 0; j < speed; j++) {
+
+      animate();
+    }
+
+    async function animate() {
+
+      ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      if (In_or_out == "in") {
+        if (dir == "right") {
+
+          ctx.drawImage(playerImage, FrameX * Sprite_Width + FrameX_counter, FrameY * Sprite_Height, Sprite_Width + Sprite_Width_counter, Sprite_Height, (dx + 40), dy + dy_counter - 5, CANVAS_WIDTH - 470, CANVAS_HEIGHT - 360 + CANVAS_HEIGHT_counter);
+        }
+        else {
+
+          ctx.drawImage(playerImage, FrameX * Sprite_Width + FrameX_counter, FrameY * Sprite_Height, Sprite_Width + Sprite_Width_counter, Sprite_Height, (dx + 40) - 40, dy + dy_counter - 5, CANVAS_WIDTH - 470, CANVAS_HEIGHT - 360 + CANVAS_HEIGHT_counter);
+        }
+      }
+      else {
+        dy = end_y;
+        ctx.save();
+        ctx.scale(-1, 1);
+        if (dir == "right") {
+
+          ctx.drawImage(playerImage, FrameX * Sprite_Width + FrameX_counter, FrameY * Sprite_Height, Sprite_Width + Sprite_Width_counter, Sprite_Height, -(dx + 40) - 9, dy + dy_counter - 5, CANVAS_WIDTH - 470, CANVAS_HEIGHT - 360 + CANVAS_HEIGHT_counter);
+        } else {
+          ctx.drawImage(playerImage, FrameX * Sprite_Width + FrameX_counter, FrameY * Sprite_Height, Sprite_Width + Sprite_Width_counter, Sprite_Height, -(dx + 40) - 9 - 40, dy + dy_counter - 5, CANVAS_WIDTH - 470, CANVAS_HEIGHT - 360 + CANVAS_HEIGHT_counter);
+
+        }
+        ctx.restore();
+      }
+
+
+      if (GameFrames % StaggerFrames == 0) {
+        FrameX++;
+
+        if (temp == false) {
+
+          if (FrameX == 0) {
+            FrameX_counter = 0;
+            Sprite_Width_counter = 0;
+            CANVAS_HEIGHT_counter = -15;
+          }
+          else if (FrameX == 1) {
+            FrameX_counter = 0;
+            Sprite_Width_counter = 15;
+            CANVAS_HEIGHT_counter = -12;
+            dy_counter = 13;
+          }
+          else if (FrameX == 2) {
+            Sprite_Width_counter = 30;
+            CANVAS_HEIGHT_counter = -9;
+            dy_counter = 11;
+          }
+          else if (FrameX == 3) {
+            FrameX_counter = 10;
+            Sprite_Width_counter = 35;
+            CANVAS_HEIGHT_counter = -8;
+            dy_counter = 10;
+          }
+          else if (FrameX == 4) {
+            FrameX_counter = 30;
+            Sprite_Width_counter = 47;
+            CANVAS_HEIGHT_counter = -5;
+            dy_counter = 9;
+          }
+          else if (FrameX == 5) {
+            FrameX_counter = 53;
+            Sprite_Width_counter = 57;
+            CANVAS_HEIGHT_counter = -4;
+            dy_counter = 8;
+          }
+          else if (FrameX == 6) {
+            FrameX_counter = 85;
+            Sprite_Width_counter = 63;
+            CANVAS_HEIGHT_counter = -3;
+            dy_counter = 7;
+          }
+          else if (FrameX == 7) {
+            FrameX_counter = 120;
+            Sprite_Width_counter = 74;
+            CANVAS_HEIGHT_counter = -2;
+            dy_counter = 6;
+          }
+          else if (FrameX == 8) {
+            FrameX_counter = 165;
+            Sprite_Width_counter = 78;
+            CANVAS_HEIGHT_counter = -1;
+            dy_counter = 5;
+          }
+          else if (FrameX == 9) {
+            FrameX_counter = 215;
+            Sprite_Width_counter = 85;
+            CANVAS_HEIGHT_counter = 0;
+          }
+          if (FrameX > 9) {
+            temp = true;
+            FrameX = 0;
+            FrameX_counter = 0;
+            Sprite_Width_counter = 0;
+            CANVAS_HEIGHT_counter = 15;
+            StaggerFrames = 4;
+            dy = start_y;
+            dy_counter = 0;
+          }
+        }
+        else {
+          if (FrameX == 1) {
+            FrameX++;
+          }
+
+
+          if (FrameX == 0) {
+            FrameX_counter = 0;
+            Sprite_Width_counter = 0;
+            CANVAS_HEIGHT_counter = 15;
+          }
+          else if (FrameX == 1) {
+            FrameX_counter = 0;
+            Sprite_Width_counter = 15;
+            CANVAS_HEIGHT_counter = 12;
+          }
+          else if (FrameX == 2) {
+            Sprite_Width_counter = 30;
+            CANVAS_HEIGHT_counter = 9;
+          }
+          else if (FrameX == 3) {
+            FrameX_counter = 10;
+            Sprite_Width_counter = 35;
+            CANVAS_HEIGHT_counter = 8;
+          }
+          else if (FrameX == 4) {
+            FrameX_counter = 30;
+            Sprite_Width_counter = 47;
+            CANVAS_HEIGHT_counter = 5;
+          }
+          else if (FrameX == 5) {
+            FrameX_counter = 53;
+            Sprite_Width_counter = 57;
+            CANVAS_HEIGHT_counter = 4;
+          }
+          else if (FrameX == 6) {
+            FrameX_counter = 85;
+            Sprite_Width_counter = 63;
+            CANVAS_HEIGHT_counter = 3;
+          }
+          else if (FrameX == 7) {
+            FrameX_counter = 120;
+            Sprite_Width_counter = 74;
+            CANVAS_HEIGHT_counter = 2;
+          }
+          else if (FrameX == 8) {
+            FrameX_counter = 165;
+            Sprite_Width_counter = 78;
+            CANVAS_HEIGHT_counter = 1;
+          }
+          else if (FrameX == 9) {
+            FrameX_counter = 215;
+            Sprite_Width_counter = 85;
+            CANVAS_HEIGHT_counter = 0;
+          }
+          if (FrameX > 9) {
+            FrameX = 0;
+            FrameX_counter = 0;
+            Sprite_Width_counter = 0;
+            CANVAS_HEIGHT_counter = 15;
+          }
+        }
+
+
+
+
+      }
+      if (value) {
+
+        requestAnimationFrame(animate);
+      }
+      if (moveFrames % moveStagger == 0) {
+        // dx++;
+        // if (dx == end_x) {
+        //   value = false;
+        //   console.log("right done");
+        //   resolve(true);
+        // }
+      }
+      if (!portal_status) {
+        value = false;
+        cancelAnimationFrame(animate);
+        console.log("portal rotate done");
+        ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        resolve(true);
+      }
+
+      GameFrames++;
+      moveFrames++;
+    }
+    // animate()
+
+
+  })
+
+}
+
+
+async function doctor_portal_move() {
+  document.getElementById('canvas7').getContext('2d').clearRect(0, 0, 480, 400);
+  portal_status = true;
+  let start_x = path[0].from[0];
+  let start_y = path[0].from[1];
+  let end_x = path[path.length - 1].to[0];
+  let end_y = path[path.length - 1].to[1];
+  if (path[0].direction == "right" || path[0].direction == "up") {
+    doctor_portal_rotate(start_x, start_y, end_x, end_y, 3, "in", "right");
+  }
+  else {
+    doctor_portal_rotate(start_x, start_y, end_x, end_y, 3, "in", "left");
+  }
+  if (path[path.length - 1].direction == "right" || path[path.length - 1].direction == "up") {
+    doctor_portal_rotate(end_x - 40, start_y, end_x, end_y, 4, "out", "right");
+  }
+  else {
+    doctor_portal_rotate(end_x - 40, start_y, end_x, end_y, 4, "out", "left");
+  }
+  if (path[0].direction == "right" || path[0].direction == "up") {
+    await doctor_hand_rotate(start_x, start_y, end_x, end_y, "right");
+    doctor_right_in_through_portal(start_x, start_y, end_x, end_y);
+  }
+  else {
+    await doctor_hand_rotate(start_x, start_y, end_x, end_y, "left");
+    doctor_left_in_through_portal(start_x, start_y, end_x, end_y);
+  }
+
+}
+
+async function doctor_right_in_through_portal(start_x, start_y, end_x, end_y) {
+  return new Promise(async function (resolve) {
+    let canvas = document.getElementById("canvas6");
+    let ctx = canvas.getContext("2d");
+    let CANVAS_HEIGHT = canvas.height = 400;
+    let CANVAS_WIDTH = canvas.width = 480;
+
+    let playerImage = new Image();
+    playerImage.src = 'DoctorStrange-anime1.png';
+    let Sprite_Width = 100;
+    let Sprite_Height = 137;
+    let FrameX = 0;
+    let FrameY = 0;
+    let GameFrames = 0;
+    let StaggerFrames = 8;
+    let dx = start_x;
+    let dy = start_y;
+    let moveStagger = 2;
+    let moveFrames = 0;
+    let FrameX_counter = 0;
+    let temp = false;
+    let temp2 = false;
+    // ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    var value = true;
+
+    // ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    // ctx.drawImage(playerImage, FrameX-FrameX_counter, FrameY * Sprite_Height, Sprite_Width, Sprite_Height, dx, dy, CANVAS_WIDTH - 445, CANVAS_HEIGHT - 370);
+    // await hold(4000);
+    console.log("right in start")
+    for (let j = 0; j < speed; j++) {
+
+      animate();
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      ctx.drawImage(playerImage, FrameX - FrameX_counter, FrameY * Sprite_Height, Sprite_Width, Sprite_Height, dx, dy, CANVAS_WIDTH - 445, CANVAS_HEIGHT - 370);
+      if (GameFrames % StaggerFrames == 0) {
+        FrameY++;
+        if (FrameY > 8) {
+          FrameY = 0;
+        }
+      }
+      if (value) {
+
+        requestAnimationFrame(animate);
+      }
+
+      if (moveFrames % moveStagger == 0) {
+        if (temp == false) {
+          value = false;
+          setTimeout(function () {
+            value = true;
+            temp = true;
+            animate();
+          }
+            , 2000);
+        }
+
+        dx++;
+        if (FrameX_counter < Sprite_Width) {
+
+          if (dx >= start_x + 15) {
+            FrameX_counter++;
+            dx--;
+            if (temp2 == false) {
+              temp2 = true;
+              if (path[path.length - 1].direction == "right" || path[path.length - 1].direction == "up") {
+
+                doctor_right_out_through_portal(start_x, start_y, end_x, end_y);
+              } else {
+                doctor_left_out_through_portal(start_x, start_y, end_x, end_y);
+              }
+            }
+          }
+        }
+        else {
+          value = false;
+          console.log("right in done");
+          resolve(true);
+        }
+      }
+
+      GameFrames++;
+      moveFrames++;
+    }
+    // animate()
+
+  })
+}
+
+
+async function doctor_right_out_through_portal(start_x, start_y, end_x, end_y) {
+  return new Promise(async function (resolve) {
+    let canvas = document.getElementById("canvas7");
+    let ctx = canvas.getContext("2d");
+    let CANVAS_HEIGHT = canvas.height = 400;
+    let CANVAS_WIDTH = canvas.width = 480;
+
+    let playerImage = new Image();
+    playerImage.src = 'DoctorStrange-anime1.png';
+    let Sprite_Width = 100;
+    let Sprite_Height = 137;
+    let FrameX = 0;
+    let FrameY = 0;
+    let GameFrames = 0;
+    let StaggerFrames = 8;
+    let dx = end_x + 3;
+    let dy = end_y;
+    let moveStagger = 2;
+    let moveFrames = 0;
+    let FrameX_counter = 100;
+    let temp = false;
+    // ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    var value = true;
+    // await hold(4000);
+    console.log("right out start");
+    for (let j = 0; j < speed; j++) {
+
+      animate();
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      ctx.drawImage(playerImage, FrameX + FrameX_counter, FrameY * Sprite_Height, Sprite_Width, Sprite_Height, dx, dy, CANVAS_WIDTH - 445, CANVAS_HEIGHT - 370);
+      if (GameFrames % StaggerFrames == 0) {
+        FrameY++;
+        if (FrameY > 8) {
+          FrameY = 0;
+        }
+      }
+      if (value) {
+
+        requestAnimationFrame(animate);
+      }
+
+      if (moveFrames % moveStagger == 0) {
+
+        dx++;
+        if (FrameX_counter >= 0) {
+          FrameX_counter--;
+
+        }
+        else {
+          dx++;
+        }
+        dx--;
+        if (dx >= end_x + 10) {
+          value = false;
+          console.log("right out done");
+          portal_status = false;
+          resolve(true);
+
+        }
+      }
+
+      GameFrames++;
+      moveFrames++;
+    }
+    // animate()
+
+  })
+}
+
+
+
+async function doctor_left_in_through_portal(start_x, start_y, end_x, end_y) {
+  return new Promise(async function (resolve) {
+    let canvas = document.getElementById("canvas6");
+    let ctx = canvas.getContext("2d");
+    let CANVAS_HEIGHT = canvas.height = 400;
+    let CANVAS_WIDTH = canvas.width = 480;
+
+    let playerImage = new Image();
+    playerImage.src = 'DoctorStrange-anime2.png';
+    let Sprite_Width = 127;
+    let Sprite_Height = 143;
+    let FrameX = 0;
+    let FrameY = 2;
+    let GameFrames = 0;
+    let StaggerFrames = 12;
+    let dx = start_x + 8;
+    let dy = start_y;
+    let moveStagger = 2;
+    let moveFrames = 0;
+    let FrameX_counter = 0;
+    let temp = false;
+    let temp2 = false;
+    // ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    var value = true;
+
+    // ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    // ctx.drawImage(playerImage, FrameX-FrameX_counter, FrameY * Sprite_Height, Sprite_Width, Sprite_Height, dx, dy, CANVAS_WIDTH - 445, CANVAS_HEIGHT - 370);
+    // await hold(4000);
+    console.log("left in start");
+    for (let j = 0; j < speed; j++) {
+
+      animate();
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      ctx.drawImage(playerImage, FrameX + FrameX_counter, FrameY * Sprite_Height, Sprite_Width, Sprite_Height, dx, dy, CANVAS_WIDTH - 445, CANVAS_HEIGHT - 370);
+      if (GameFrames % StaggerFrames == 0) {
+        FrameY++;
+        if (FrameY > 3) {
+          FrameY = 1;
+        }
+      }
+      if (value) {
+
+        requestAnimationFrame(animate);
+      }
+
+      if (moveFrames % moveStagger == 0) {
+        if (temp == false) {
+          value = false;
+          setTimeout(function () {
+            value = true;
+            temp = true;
+            animate();
+          }
+            , 2000);
+        }
+
+        dx--;
+        if (FrameX_counter < Sprite_Width) {
+
+          if (dx <= start_x) {
+            FrameX_counter++;
+            dx++;
+            if (temp2 == false) {
+              temp2 = true;
+              if (path[path.length - 1].direction == "left" || path[path.length - 1].direction == "down")
+                doctor_left_out_through_portal(start_x, start_y, end_x, end_y);
+              else {
+                doctor_right_out_through_portal(start_x, start_y, end_x, end_y);
+              }
+            }
+          }
+        }
+        else {
+          value = false;
+          console.log("left in done");
+          resolve(true);
+        }
+      }
+
+      GameFrames++;
+      moveFrames++;
+    }
+    // animate()
+
+  })
+}
+
+
+
+async function doctor_left_out_through_portal(start_x, start_y, end_x, end_y) {
+  return new Promise(async function (resolve) {
+    let canvas = document.getElementById("canvas7");
+    let ctx = canvas.getContext("2d");
+    let CANVAS_HEIGHT = canvas.height = 400;
+    let CANVAS_WIDTH = canvas.width = 480;
+
+    let playerImage = new Image();
+    playerImage.src = 'DoctorStrange-anime2.png';
+    let Sprite_Width = 127;
+    let Sprite_Height = 143;
+    let FrameX = 0;
+    let FrameY = 2;
+    let GameFrames = 0;
+    let StaggerFrames = 12;
+    let dx = end_x + 9;
+    let dy = end_y;
+    let moveStagger = 2;
+    let moveFrames = 0;
+    let FrameX_counter = 115;
+    let temp = false;
+    // ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    var value = true;
+    // await hold(4000);
+    console.log("left out start");
+    for (let j = 0; j < speed; j++) {
+
+      animate();
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      ctx.drawImage(playerImage, FrameX - FrameX_counter, FrameY * Sprite_Height, Sprite_Width, Sprite_Height, dx, dy, CANVAS_WIDTH - 445, CANVAS_HEIGHT - 370);
+      if (GameFrames % StaggerFrames == 0) {
+        FrameY++;
+        if (FrameY > 3) {
+          FrameY = 1;
+        }
+      }
+      if (value) {
+
+        requestAnimationFrame(animate);
+      }
+
+      if (moveFrames % moveStagger == 0) {
+
+        dx--;
+        if (FrameX_counter >= 0) {
+          FrameX_counter--;
+
+        }
+        else {
+          dx--;
+        }
+        dx++;
+        if (dx == end_x) {
+          value = false;
+          console.log("left out done");
+          portal_status = false;
+          resolve(true);
+
+        }
+      }
+
+      GameFrames++;
+      moveFrames++;
+    }
+    // animate()
+
+  })
+}
+
+
+
 async function doctor_right_move(start_x, start_y, end_x, end_y) {
   return new Promise(function (resolve) {
-    let canvas = document.getElementById("canvas1");
+    let canvas = document.getElementById("canvas6");
     let ctx = canvas.getContext("2d");
     let CANVAS_HEIGHT = (canvas.height = 400);
     let CANVAS_WIDTH = (canvas.width = 480);
@@ -3738,7 +4432,7 @@ async function doctor_right_move(start_x, start_y, end_x, end_y) {
 
 async function doctor_left_move(start_x, start_y, end_x, end_y) {
   return new Promise(function (resolve) {
-    let canvas = document.getElementById("canvas1");
+    let canvas = document.getElementById("canvas6");
     let ctx = canvas.getContext("2d");
     let CANVAS_HEIGHT = (canvas.height = 400);
     let CANVAS_WIDTH = (canvas.width = 480);
@@ -3800,7 +4494,7 @@ async function doctor_left_move(start_x, start_y, end_x, end_y) {
 
 async function doctor_down_move(start_x, start_y, end_x, end_y) {
   return new Promise((resolve, reject) => {
-    let canvas = document.getElementById("canvas1");
+    let canvas = document.getElementById("canvas6");
     let ctx = canvas.getContext("2d");
     let CANVAS_HEIGHT = (canvas.height = 400);
     let CANVAS_WIDTH = (canvas.width = 480);
@@ -3863,7 +4557,7 @@ async function doctor_down_move(start_x, start_y, end_x, end_y) {
 
 async function doctor_up_move(start_x, start_y, end_x, end_y) {
   return new Promise((resolve, reject) => {
-    let canvas = document.getElementById("canvas1");
+    let canvas = document.getElementById("canvas6");
     let ctx = canvas.getContext("2d");
     let CANVAS_HEIGHT = (canvas.height = 400);
     let CANVAS_WIDTH = (canvas.width = 480);
@@ -3925,7 +4619,7 @@ async function doctor_up_move(start_x, start_y, end_x, end_y) {
 
 async function Iron_right_move(start_x, start_y, end_x, end_y) {
   return new Promise((resolve, reject) => {
-    let canvas = document.getElementById("canvas2");
+    let canvas = document.getElementById("canvas1");
     let ctx = canvas.getContext("2d");
     let CANVAS_HEIGHT = (canvas.height = 400);
     let CANVAS_WIDTH = (canvas.width = 480);
@@ -3990,7 +4684,7 @@ async function Iron_right_move(start_x, start_y, end_x, end_y) {
 }
 async function Iron_left_move(start_x, start_y, end_x, end_y) {
   return new Promise((resolve, reject) => {
-    let canvas = document.getElementById("canvas2");
+    let canvas = document.getElementById("canvas1");
     let ctx = canvas.getContext("2d");
     let CANVAS_HEIGHT = (canvas.height = 400);
     let CANVAS_WIDTH = (canvas.width = 480);
@@ -4058,7 +4752,7 @@ async function Iron_left_move(start_x, start_y, end_x, end_y) {
 
 async function Iron_up_move(start_x, start_y, end_x, end_y) {
   return new Promise((resolve, reject) => {
-    let canvas = document.getElementById("canvas2");
+    let canvas = document.getElementById("canvas1");
     let ctx = canvas.getContext("2d");
     let CANVAS_HEIGHT = (canvas.height = 400);
     let CANVAS_WIDTH = (canvas.width = 480);
@@ -4122,7 +4816,7 @@ async function Iron_up_move(start_x, start_y, end_x, end_y) {
 
 async function Iron_down_move(start_x, start_y, end_x, end_y) {
   return new Promise((resolve, reject) => {
-    let canvas = document.getElementById("canvas2");
+    let canvas = document.getElementById("canvas1");
     let ctx = canvas.getContext("2d");
     let CANVAS_HEIGHT = (canvas.height = 400);
     let CANVAS_WIDTH = (canvas.width = 480);
@@ -4446,7 +5140,7 @@ async function Thor_right_hammer_spin(start_x, start_y, end_x, end_y) {
       value = false;
       resolve(true);
     }, 1000);
-    let canvas = document.getElementById("canvas4");
+    let canvas = document.getElementById("canvas2");
     let ctx = canvas.getContext("2d");
     let CANVAS_HEIGHT = (canvas.height = 400);
     let CANVAS_WIDTH = (canvas.width = 480);
@@ -4510,7 +5204,7 @@ async function Thor_right_hammer_spin(start_x, start_y, end_x, end_y) {
 
 async function Thor_right_fly(start_x, start_y, end_x, end_y) {
   return new Promise((resolve, reject) => {
-    let canvas = document.getElementById("canvas4");
+    let canvas = document.getElementById("canvas2");
     let ctx = canvas.getContext("2d");
     let CANVAS_HEIGHT = (canvas.height = 400);
     let CANVAS_WIDTH = (canvas.width = 480);
@@ -4579,7 +5273,7 @@ async function Thor_right_fly(start_x, start_y, end_x, end_y) {
 
 async function Thor_right_fly2(start_x, start_y, end_x, end_y) {
   return new Promise((resolve, reject) => {
-    let canvas = document.getElementById("canvas4");
+    let canvas = document.getElementById("canvas2");
     let ctx = canvas.getContext("2d");
     let CANVAS_HEIGHT = (canvas.height = 400);
     let CANVAS_WIDTH = (canvas.width = 480);
@@ -4661,7 +5355,7 @@ async function Thor_left_hammer_spin(start_x, start_y, end_x, end_y) {
       value = false;
       resolve(true);
     }, 1000);
-    let canvas = document.getElementById("canvas4");
+    let canvas = document.getElementById("canvas2");
     let ctx = canvas.getContext("2d");
     let CANVAS_HEIGHT = (canvas.height = 400);
     let CANVAS_WIDTH = (canvas.width = 480);
@@ -4727,7 +5421,7 @@ async function Thor_left_hammer_spin(start_x, start_y, end_x, end_y) {
 
 async function Thor_left_fly(start_x, start_y, end_x, end_y) {
   return new Promise((resolve, reject) => {
-    let canvas = document.getElementById("canvas4");
+    let canvas = document.getElementById("canvas2");
     let ctx = canvas.getContext("2d");
     let CANVAS_HEIGHT = (canvas.height = 400);
     let CANVAS_WIDTH = (canvas.width = 480);
@@ -4797,7 +5491,7 @@ async function Thor_left_fly(start_x, start_y, end_x, end_y) {
 
 async function Thor_left_fly2(start_x, start_y, end_x, end_y) {
   return new Promise((resolve, reject) => {
-    let canvas = document.getElementById("canvas4");
+    let canvas = document.getElementById("canvas2");
     let ctx = canvas.getContext("2d");
     let CANVAS_HEIGHT = (canvas.height = 400);
     let CANVAS_WIDTH = (canvas.width = 480);
@@ -4878,7 +5572,7 @@ async function Thor_left_move(start_x, start_y, end_x, end_y) {
 
 async function Thor_up_move(start_x, start_y, end_x, end_y) {
   return new Promise((resolve, reject) => {
-    let canvas = document.getElementById("canvas4");
+    let canvas = document.getElementById("canvas2");
     let ctx = canvas.getContext("2d");
     let CANVAS_HEIGHT = (canvas.height = 400);
     let CANVAS_WIDTH = (canvas.width = 480);
@@ -4942,7 +5636,7 @@ async function Thor_up_move(start_x, start_y, end_x, end_y) {
 
 async function Thor_down_move(start_x, start_y, end_x, end_y) {
   return new Promise((resolve, reject) => {
-    let canvas = document.getElementById("canvas4");
+    let canvas = document.getElementById("canvas2");
     let ctx = canvas.getContext("2d");
     let CANVAS_HEIGHT = (canvas.height = 400);
     let CANVAS_WIDTH = (canvas.width = 480);
