@@ -4012,16 +4012,16 @@ async function doctor_portal_move() {
   let end_x = path[path.length - 1].to[0];
   let end_y = path[path.length - 1].to[1];
   if (path[0].direction == "right" || path[0].direction == "up") {
-    doctor_portal_rotate(start_x, start_y, end_x, end_y, 3, "in", "right");
+    doctor_portal_rotate(start_x, start_y, end_x, end_y, 4, "in", "right");
   }
   else {
-    doctor_portal_rotate(start_x, start_y, end_x, end_y, 3, "in", "left");
+    doctor_portal_rotate(start_x, start_y, end_x, end_y, 4, "in", "left");
   }
   if (path[path.length - 1].direction == "right" || path[path.length - 1].direction == "up") {
-    doctor_portal_rotate(end_x - 40, start_y, end_x, end_y, 4, "out", "right");
+    doctor_portal_rotate(end_x - 40, start_y, end_x, end_y, 5, "out", "right");
   }
   else {
-    doctor_portal_rotate(end_x - 40, start_y, end_x, end_y, 4, "out", "left");
+    doctor_portal_rotate(end_x - 40, start_y, end_x, end_y, 5, "out", "left");
   }
   if (path[0].direction == "right" || path[0].direction == "up") {
     await doctor_hand_rotate(start_x, start_y, end_x, end_y, "right");
