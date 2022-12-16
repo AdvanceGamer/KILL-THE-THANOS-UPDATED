@@ -4003,10 +4003,26 @@ async function doctor_portal_rotate(start_x, start_y, end_x, end_y, canvas_layer
 
 }
 
+var doctor_portal_move_done=false;
+
+async function doctor_portal_move_check(){
+  return new Promise((resolve, reject) => {
+    let intervalid=setInterval(()=>{
+      if(doctor_portal_move_done){
+        clearInterval(intervalid);
+        resolve(true);
+      }
+      else{
+        console.log("not done");
+      }
+    },500)
+  });
+}
 
 async function doctor_portal_move() {
   document.getElementById('canvas7').getContext('2d').clearRect(0, 0, 480, 400);
   portal_status = true;
+  doctor_portal_move_done=false;
   let start_x = path[0].from[0];
   let start_y = path[0].from[1];
   let end_x = path[path.length - 1].to[0];
@@ -4025,11 +4041,15 @@ async function doctor_portal_move() {
   }
   if (path[0].direction == "right" || path[0].direction == "up") {
     await doctor_hand_rotate(start_x, start_y, end_x, end_y, "right");
-    doctor_right_in_through_portal(start_x, start_y, end_x, end_y);
+    await doctor_right_in_through_portal(start_x, start_y, end_x, end_y);
+    await doctor_portal_move_check();
+    console.log("doctor portal move done");
   }
   else {
     await doctor_hand_rotate(start_x, start_y, end_x, end_y, "left");
-    doctor_left_in_through_portal(start_x, start_y, end_x, end_y);
+    await doctor_left_in_through_portal(start_x, start_y, end_x, end_y);
+    await doctor_portal_move_check();
+    console.log("doctor portal move done");
   }
 
 }
@@ -4090,7 +4110,7 @@ async function doctor_right_in_through_portal(start_x, start_y, end_x, end_y) {
             temp = true;
             animate();
           }
-            , 2000);
+            , 1000);
         }
 
         dx++;
@@ -4185,6 +4205,7 @@ async function doctor_right_out_through_portal(start_x, start_y, end_x, end_y) {
           value = false;
           console.log("right out done");
           portal_status = false;
+          doctor_portal_move_done=true;
           resolve(true);
 
         }
@@ -4256,7 +4277,7 @@ async function doctor_left_in_through_portal(start_x, start_y, end_x, end_y) {
             temp = true;
             animate();
           }
-            , 2000);
+            , 1000);
         }
 
         dx--;
@@ -4351,6 +4372,7 @@ async function doctor_left_out_through_portal(start_x, start_y, end_x, end_y) {
           value = false;
           console.log("left out done");
           portal_status = false;
+          doctor_portal_move_done=true;
           resolve(true);
 
         }
