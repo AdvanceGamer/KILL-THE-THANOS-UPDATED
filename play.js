@@ -1359,6 +1359,7 @@ function Animation_move_player() {
 }
 
 async function space_stone_effect(player_index, dir) {
+
   return new Promise(async (resolve, reject) => {
     if (dir == "+") {
       source = window[players[player_index]].position;
@@ -1521,6 +1522,9 @@ async function space_stone_effect(player_index, dir) {
       active_player_count = current_player_count;
       resolve(true);
     }
+if(destination==100){
+  after_winning();
+}
 
   });
 }
@@ -1551,6 +1555,7 @@ async function move_player() {
   // selgrid.insertAdjacentElement("beforeend", notes);
 
   //animation logic
+if(window[players[active_player_count - 1]].position + number<=100){
   return new Promise(async (resolve, reject) => {
     source = window[players[active_player_count - 1]].position;
     destination = window[players[active_player_count - 1]].position + number;
@@ -1566,8 +1571,16 @@ async function move_player() {
     }
 
     window[players[active_player_count - 1]].position = destination;
+    if(destination==100){
+      after_winning();
+    }
     resolve(true);
   });
+}
+
+
+
+
 
 
   //animation logic
@@ -2342,16 +2355,49 @@ async function avail_options() {
         }
 
         if (this.value == "space") {
+          let htmlplayers=document.querySelector(".space-stone");
           for (var i = 0; i < space_players.length; i++) {
             if (space_arr.includes(space_players[i].value)) {
               space_players[i].style.backgroundColor = "white";
               space_players[i].disabled = false;
+              htmlplayers.querySelector(`.p${i+1}`).addEventListener("change",check);
             }
           }
-          for (var i = 0; i < space_dir.length; i++) {
-            space_dir[i].style.backgroundColor = "white";
-            space_dir[i].disabled = false;
+      
+          function check(e){
+            if((this.value=="spp1" && window[players[0]].position + number<=100)||
+            (this.value=="spp2" && window[players[1]].position + number<=100)||
+            (this.value=="spp3" && window[players[2]].position + number<=100)||
+            (this.value=="spp4" && window[players[3]].position + number<=100)){
+              space_dir[0].style.backgroundColor = "white";
+              space_dir[0].disabled = false;
+            }
+            else{
+              space_dir[0].disabled = true;
+              space_dir[0].checked = false;
+              space_dir[0].style.color = "#bdbdbdbd";
+              space_dir[0].style.backgroundColor = "#454857";
+              space_dir[0].style.backgroundImage = "none";
+            }
+            if((this.value=="spp1" && window[players[0]].position - number>0)||
+            (this.value=="spp2" && window[players[1]].position - number>0)||
+            (this.value=="spp3" && window[players[2]].position - number>0)||
+            (this.value=="spp4" && window[players[3]].position - number>0)){
+              space_dir[1].style.backgroundColor = "white";
+              space_dir[1].disabled = false;
+            }
+            else{
+              space_dir[1].disabled = true;
+              space_dir[1].checked = false;
+              space_dir[1].style.color = "#bdbdbdbd";
+              space_dir[1].style.backgroundColor = "#454857";
+              space_dir[1].style.backgroundImage = "none";
+            }
           }
+          // for (var i = 0; i < space_dir.length; i++) {
+          //   space_dir[i].style.backgroundColor = "white";
+          //   space_dir[i].disabled = false;
+          // }
         }
 
         if (this.value == "power") {
@@ -3464,6 +3510,34 @@ function isaavailoption() {
   }
   return false;
 }
+
+
+function winner_check(){
+  if(active_player.position==100){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+function  after_winning(){
+  console.log("after_winning");
+  let winner_name;
+  for(i=0;i<players.length;i++){
+    if(window[players[i]].position==100){
+      winner_name=window[players[i]].name;
+    }
+  }
+document.getElementsByClassName("play-container")[0].innerHTML=`
+<div class="winner-container">
+<h1> ${winner_name} Won </h1>
+<img src="thanos-dust.gif" alt="oops">
+</div>
+`
+}
+
+
 
 function element_from_html(html) {
   const template = document.createElement("template");

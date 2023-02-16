@@ -7,11 +7,16 @@
   padding: 0;
 }
 body {
+ 
   background-image: url("https://img4.goodfon.com/wallpaper/nbig/a/53/game-background-gory-les-idoly-cherep-kuvshin-noch.jpg");
+  background-image: url("background2.jpg");
+  /* background-image: url("https://media.istockphoto.com/id/477516876/photo/black-background.jpg?b=1&s=170667a&w=0&k=20&c=LCMGrB1a4esb9x62QV-50BsBFO39YVo8wlMsOzYcnnU="); */
+
+
 }
 .game-name-container {
   display: flex;
-  justify-content: center;
+  justify-content: center;  
   align-items: center;
 }
 

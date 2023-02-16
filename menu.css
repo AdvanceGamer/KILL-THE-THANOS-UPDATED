@@ -1,8 +1,197 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&family=Rampart+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Indie+Flower&family=Nunito:ital,wght@0,200;0,400;0,600;0,700;0,800;1,200;1,300;1,400;1,600;1,700;1,800&family=Rampart+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Courgette&family=Indie+Flower&family=Irish+Grover&family=Nunito:ital,wght@0,200;0,400;0,600;0,700;0,800;1,200;1,300;1,400;1,600;1,700;1,800&family=Rampart+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Courgette&family=Inconsolata&family=Indie+Flower&family=Inter:wght@400;500;600;700&family=Irish+Grover&family=Lobster&family=Nunito:ital,wght@0,200;0,400;0,600;0,700;0,800;1,200;1,300;1,400;1,600;1,700;1,800&family=Pacifico&family=Rampart+One&display=swap");
 * {
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
-.portal-dialogue {
+::-webkit-scrollbar {
+  width: 5px;
+}
+body {
+  /* background-image: url("https://img4.goodfon.com/wallpaper/nbig/a/53/game-background-gory-les-idoly-cherep-kuvshin-noch.jpg");
+  background-image: url("background2.jpg"); */
+}
+.nav-bar{
+  margin: 20px;
+  text-align: center;
+  border: 1px solid black;
+}
+
+.nav-bar .nav-bar-container{
+  display:flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  align-items: center;
+  border: 1px solid black;
+  /* height:50px; */
+  padding: 10px 0px 10px 0px;
+}
+
+.nav-bar .nav-bar-container .game-section,.nav-bar .nav-bar-container .profile-section,.nav-bar .nav-bar-container .arena-section,.nav-bar .nav-bar-container .animation-section,.nav-bar .nav-bar-container .shop-section{
+  height: 30px;
+  border: 1px solid black;
+  padding: 0px 15px 0px 15px;
+  margin: 2px 0px 2px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+}
+
+.nav-bar .nav-bar-container .game-section{
+
+}
+.nav-bar .nav-bar-container .profile-section{
+  
+}
+.nav-bar .nav-bar-container .arena-section{
+  
+}
+.nav-bar .nav-bar-container .animation-section{
+  
+}
+.nav-bar .nav-bar-container .shop-section{
+  
+}
+
+.game-section-container{
+  margin: 20px;
+  padding:10px 0px 0px 0px;
+  border: 1px solid black;
+  display: flex;
+  justify-content: space-evenly;
+}
+.select-game-type-section{
+  width:40%;
+  height: 400px;
+  border: 1px solid black;
+  text-align: center;
+}
+.select-game-type-section .select-type-text{
+  padding:5px;
+  margin: 5px;
+}
+.select-game-type-section .default-4p-3p-2p-container{
+  border: 1px solid black;
+  /* padding: 5px; */
+  margin: 5px;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+.default-4p-3p-2p-container .select-game-type-default,
+.default-4p-3p-2p-container .select-game-type-4p,
+.default-4p-3p-2p-container .select-game-type-3p,
+.default-4p-3p-2p-container .select-game-type-2p{
+  height: 30px;
+  border: 1px solid black;
+  padding: 0px 15px 0px 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  
+}
+
+
+.select-game-type-section .select-game-type-default-container,
+.select-game-type-section .select-game-type-4p-container,
+.select-game-type-section .select-game-type-3p-container,
+.select-game-type-section .select-game-type-2p-container{
+  border: 1px solid black;
+  padding: 5px;   
+  margin: 5px;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  height: 300px;
+  overflow-y: scroll;
+}
+.select-game-type-default-container .select-game-type-frames,
+.select-game-type-4p-container .select-game-type-frames,
+.select-game-type-3p-container .select-game-type-frames,
+.select-game-type-2p-container .select-game-type-frames{
+  width:130px;
+  height:135px;
+  border: 1px solid black;  
+  margin:5px;
+}
+.select-game-type-default-container .select-game-type-default-players,
+.select-game-type-4p-container .select-game-type-4p-players,
+.select-game-type-3p-container .select-game-type-3p-players,
+.select-game-type-2p-container .select-game-type-2p-players{
+  width:130px;
+  height:135px;
+  border: 1px solid black;  
+  /* margin:5px; */
+  position: relative;
+}
+
+.select-player-section{
+  width:40%;
+  height: 400px;
+  border: 1px solid black;
+  text-align: center;
+}
+
+.select-player-section .select-player-text{
+  padding:5px;
+  margin: 5px;
+}
+
+.select-player-section .select-player-container{
+  border: 1px solid black;
+  padding: 5px;   
+  margin: 5px;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  height: 335px;
+  overflow-y: scroll;
+}
+
+.select-player-section .select-player-container .select-player-players{
+  width:130px;
+  height:135px;
+  border: 1px solid black;  
+  margin:5px;
+}
+.select-game-type-default-players .cross-icon,
+.select-game-type-4p-players .cross-icon,
+.select-game-type-3p-players .cross-icon,
+.select-game-type-2p-players .cross-icon{
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  left: 119px;
+}
+
+.select-game-type-default-players .profile-pic,
+.select-game-type-4p-players .profile-pic,
+.select-game-type-3p-players .profile-pic,
+.select-game-type-2p-players .profile-pic{
+  width: 100px;
+  height: 70px;
+  padding: 5px 0px 0px 0px;
+}
+
+.select-game-type-default-players .animation-pic,
+.select-game-type-4p-players .animation-pic,
+.select-game-type-3p-players .animation-pic,
+.select-game-type-2p-players .animation-pic{
+  width: 40px;
+  height: 30px;
+  padding: 5px 0px 0px 0px;
+}
+
+
+
+
+
+/* .portal-dialogue {
   background-color: #74bbad;
   display: flex;
   justify-content: space-around;
@@ -56,6 +245,5 @@
   width: 69px;
   height: 33px;
   visibility: hidden;
-  /* margin: 0px; */
   transform: scale(0.9);
-}
+} */
